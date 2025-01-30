@@ -4,6 +4,10 @@ import { ENV_VARS } from "./Config/envVars.js";
 import {connectDB} from "./Config/db.js"
 import movieRoutes from "./routes/movies.route.js";
 import tvRoutes from "./routes/tv.route.js";
+import searchRoutes from "./routes/search.roue.js";
+
+import cookieParser from "cookie-parser";
+import { protectRoute } from "./middleware/protectRoute.js";
 
 
 
@@ -12,12 +16,15 @@ const app = express();
 
 const PORT =ENV_VARS.PORT 
 
-app.use(express.json()); // will allow us to parse req.body
+app.use(express.json()); 
+app.use(cookieParser())// will allow us to parse req.body
 
 
 app.use("/api/v1/auth", authRoutes); // أزلنا المسافة الإضافية هنا
-app.use("/api/v1/movie", movieRoutes);
-app.use("/api/v1/tv", tvRoutes);
+app.use("/api/v1/movie",protectRoute, movieRoutes);
+app.use("/api/v1/tv",protectRoute , tvRoutes);
+app.use("/api/v1/search",protectRoute , searchRoutes);
+
 
 
 
