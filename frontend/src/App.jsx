@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast"
 import { useAuthStore } from "./Store/AuthUser";
 import { useEffect } from "react"
 import { Loader } from "lucide-react"
+import HomeScreen from "./pages/Home/HomeScreen"
 
 
 
@@ -28,10 +29,10 @@ function App() {
 			</div>
 		);
 	}
-  return (
+  return ( 
     <>
    <Routes>
-    <Route path='/' element={<Homepage />} />
+    <Route path='/' element={<HomeScreen />} />
 				<Route path='/signup' element={!user ? <SignUpPage /> : <Navigate to={"/"} />} />
         <Route path='/login' element={!user ? <Loginpage /> : <Navigate to={"/"} />}	 />	
         		{/* <Route path='/login' element={!user ? <LoginPage /> : <Navigate to={"/"} />} />
