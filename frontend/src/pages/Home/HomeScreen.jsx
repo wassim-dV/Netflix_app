@@ -1,15 +1,30 @@
 import React from 'react'
 import NavBar from "../../componet/NaveBar"; 
 import { Link } from 'react-router-dom';
-import useGetTrendingContent from "../../hooks/UseGetTrandingContent";
+import useGetTrendingContent from "../../hooks/useGetTrendingContent";
 
-import { ORIGINAL_IMG_BASE_URL } from "../../utils/constent";
+import { ORIGINAL_IMG_BASE_URL , MOVIE_CATEGORIES , TV_CATEGORIES } from "../../utils/constent";
 
 import { Info, Play } from 'lucide-react';
+import MovieSlider from '../../componet/movieSlider';
+import { useState } from "react";
+import { useContentStore } from '../../Store/content';
+
 
 function HomeScreen() {
+
+	const { contentType } = useContentStore();
+	const [imgLoading, setImgLoading] = useState(true);
 	const { trendingContent } = useGetTrendingContent();
 	console.log("Trending Content:", trendingContent);
+
+	if (!trendingContent)
+		return (
+			<div className='h-screen text-white relative'>
+				<NavBar />
+				<div className='absolute top-0 left-0 w-full h-full bg-black/70 flex items-center justify-center -z-10 shimmer' />
+			</div>
+		);
 
 
   return (
@@ -20,7 +35,9 @@ function HomeScreen() {
 
 
         <img
-		src="extraction.jpg"
+							src={ORIGINAL_IMG_BASE_URL + trendingContent?.backdrop_path}
+
+		// src="extraction.jpg"
 
 					alt='Hero img'
 					className='absolute top-0 left-0 w-full h-full object-cover -z-50'
@@ -36,19 +53,19 @@ function HomeScreen() {
 <div className='max-w-2xl'>
 
 <h1 className='mt-4 text-6xl font-extrabold text-balance'>
-							{/* {trendingContent?.title || trendingContent?.name} */}
+							{trendingContent?.title || trendingContent?.name}
 						</h1>
 
             <p className='mt-2 text-lg'>
-							{/* {trendingContent?.release_date?.split("-")[0] ||
+							{trendingContent?.release_date?.split("-")[0] ||
 								trendingContent?.first_air_date.split("-")[0]}{" "}
-							| {trendingContent?.adult ? "18+" : "PG-13"} */}
+							| {trendingContent?.adult ? "18+" : "PG-13"}
 						</p>
 
 						<p className='mt-4 text-lg'>
-							{/* {trendingContent?.overview.length > 200
+							{trendingContent?.overview.length > 200
 								? trendingContent?.overview.slice(0, 200) + "..."
-								: trendingContent?.overview} */}
+								: trendingContent?.overview}
 						</p>
 
 
@@ -78,9 +95,9 @@ function HomeScreen() {
 			</div>
 
       <div className='flex flex-col gap-10 bg-black py-10'>
-				{/* {contentType === "movie"
+				{contentType === "movie"
 					? MOVIE_CATEGORIES.map((category) => <MovieSlider key={category} category={category} />)
-					: TV_CATEGORIES.map((category) => <MovieSlider key={category} category={category} />)} */}
+					: TV_CATEGORIES.map((category) => <MovieSlider key={category} category={category} />)}
 			</div>
   </>
   )
